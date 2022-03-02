@@ -12,9 +12,7 @@ For its use it is recommended to backup the entire songs and samples before runn
 `/SAMPLES/CLIPS`
 `/SAMPLES/RESAMPLE`
 
-The operation has been tested with songs from firmware 3.1+ and 4.0beta. However I have only tested with my song library.
-
-**Nota that no changes are made to the KITS**, so keep in mind that **if you have used a clip or resample within a KIT you must rename the XML by hand** if you want to use this tool.
+The operation has been tested with songs from firmware 3.1+ and 4.0beta. However I have only tested with my song library. After changes a verification (and update) for other uses of the sample (kits and synths) in all the songs are executed.
 
 No warranty is given for the use of this tool, try it at your own risk. My recommendation is to make a copy of the SD and test it with the copy, to check that all your songs work correctly.
 
