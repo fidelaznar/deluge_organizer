@@ -26,7 +26,7 @@ I hope you find it useful.
 
 * Use it (you need python3 installed): `python dorg.py`
 
-# Use
+# Usage
 
 ~~~~~
 usage: dorg.py [-h] [-s] [-i] path
