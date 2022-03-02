@@ -1,11 +1,11 @@
 import os
+import re
 import xml.etree.ElementTree as ET
 import argparse
 
 #from matplotlib import pyplot as plt
 
 SIMULATE = False
-
 
 def file_rename(path, org, dest):
     global SIMULATE
@@ -54,7 +54,7 @@ def process_audioclips_rename(path, name, db):
                         dest_name = song_name.replace(' ', '_')
                         dest = os.path.join(
                             rel_path, dest_name + "_%02d.WAV" % audio_id)
-                        #Muevo el fichero
+                        #Muevo el fichero si es distinto
                         rename_status = file_rename(os.path.join(
                             path, ".."), audioclip_path, dest)
 
@@ -66,7 +66,7 @@ def process_audioclips_rename(path, name, db):
                                 tree.write(os.path.join(path, name))
                             print("    Relinked clip to %s" % dest)
                         else:
-                            print("    !Problems renaming file, not changes has been made.")  
+                            print("    !Problems renaming file, not changes has been made.") 
                     else:
                         dest = db[audioclip_path]
                         clip.attrib["filePath"] = dest
@@ -103,6 +103,23 @@ def process_instruments(path, name, db):
 
     return used_instruments
 
+def replace_dict_ocurrences(path, name, db):
+    global SIMULATE
+
+    song_name = os.path.join(path, name)
+    with open(song_name, "r") as file:
+        data = file.read()
+        for k,d in db.items():
+            if data.find(k)!=-1:
+                print("    Find use of %s in file (kit or synth). Replaced" % k)
+                data = data.replace(k,d)
+
+    if not SIMULATE:
+        with open(song_name, "w") as file:
+            file.write(data)
+
+
+
 
 if __name__ == '__main__':
     # Initialize the parser
@@ -137,6 +154,13 @@ if __name__ == '__main__':
             if show_instruments:
                 process_instruments(path, s, instrumentDB)
             print("")
+
+    for s in sorted(os.listdir(path)):
+        name = s.lower()
+        if not name.startswith(".") and name.endswith(".xml"):
+            # Para cada canción
+            print("> Reprocessing song '%s' for synth or kit ocurrences" % s)
+            replace_dict_ocurrences(path, name, clipDB)
 
     print(instrumentDB)
     #plt.bar(instrumentDB.keys(), instrumentDB.values(), color='g')
